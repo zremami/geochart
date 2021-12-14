@@ -1,6 +1,5 @@
 <template>
-  <div ref="map-root"
-       style="width: 100%; height: 100%">
+  <div ref="map-root" style="width: 100%; height: 100%">
   </div>
 </template>
 
@@ -9,34 +8,61 @@
   import Map from 'ol/Map'
   import TileLayer from 'ol/layer/Tile'
   import OSM from 'ol/source/OSM'
-
-  // importing the OpenLayers stylesheet is required for having
-  // good looking buttons!
+  import VectorLayer from 'ol/layer/Vector'
+  import VectorSource from 'ol/source/Vector'
+  import GeoJSON from 'ol/format/GeoJSON'
   import 'ol/ol.css'
 
   export default {
     name: 'MapContainer',
     components: {},
-    props: {},
+    props: {
+      geojson: Object
+    },
+    data: () => ({
+      vectorLayer: null,
+    }),
     mounted() {
-      // this is where we create the OpenLayers map
-      new Map({
-        // the map will be created using the 'map-root' ref
+      this.vectorLayer = new VectorLayer({
+        source: new VectorSource({
+          features: [],
+        }),
+      });
+
+      this.olMap = new Map({
         target: this.$refs['map-root'],
         layers: [
-          // adding a background tiled layer
           new TileLayer({
-            source: new OSM() // tiles are served by OpenStreetMap
+            source: new OSM(),
           }),
+          this.vectorLayer
         ],
-
-        // the map view will initially show the whole world
         view: new View({
           zoom: 0,
           center: [0, 0],
           constrainResolution: true
         }),
-      })
+      });
+
+      this.updateSource(this.geojson);
+    
     },
+    watch: {
+      geojson(value) {
+        this.updateSource(value)
+      },
+    },
+    methods: {
+      updateSource(geojson) {
+
+        const view = this.olMap.getView();
+        const source = this.vectorLayer.getSource();
+        const features = new GeoJSON({featureProjection: 'EPSG:3857'}).readFeatures(geojson);
+
+        source.clear();
+        source.addFeatures(features);
+        view.fit(source.getExtent())
+      }
+    }
   }
 </script>

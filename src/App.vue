@@ -1,25 +1,40 @@
 <template>
   <div id="app" class="container">
     <div class="cell cell-map">
-      <MapContainer></MapContainer>
+      <map-container :geojson="geojson" v-on:select="selected = $event"></map-container>
     </div>
-    <div class="cell cell-edit">
-      Edit
+    <div class="cell cell-geojson-url">
+      <geojson-url @url="geojson = $event" ></geojson-url>
     </div>
-    <div class="cell cell-inspect">
-      Inspect
+    <div class="cell cell-geojson-editor">
+      <geojson-editor :geojson="geojson" @change="geojson = $event"></geojson-editor>
+    </div>
+    <div class="cell cell-inspector">
+      <div class="chart">
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import MapContainer from './components/MapContainer'
+  import MapContainer from './components/MapContainer'
+  import GeojsonUrl from './components/GeojsonUrl'
+  import GeojsonEditor from './components/GeojsonEditor'
+
+  // Default Data
+  //import DEU from '../public/DEU.json'
 
   export default {
     name: 'App',
     components: {
-      MapContainer
+      MapContainer,
+      GeojsonUrl,
+      GeojsonEditor
     },
+    data: () => ({
+      selected: undefined,
+      geojson: null,
+    })
   }
 </script>
 
@@ -31,6 +46,7 @@ import MapContainer from './components/MapContainer'
   html, body {
     height: 100%;
     margin: 0;
+    background-color: #f0f0f0;
   }
 
   .container{
@@ -53,22 +69,35 @@ import MapContainer from './components/MapContainer'
 
   .cell {
     border-radius: 4px;
-    background-color: lightgrey;
+    background-color: white;
   }
 
   .cell-map {
-    grid-column: 1;
+    grid-column: 1 / 4;
     grid-row-start: 1;
-    grid-row-end: 3;
+    grid-row-end: 12;
   }
 
-  .cell-edit {
-    grid-column: 2;
+  .cell-geojson-url {
+    grid-column: 4;
     grid-row: 1;
   }
 
-  .cell-inspect {
-    grid-column: 2;
-    grid-row: 2;
+  .cell-geojson-editor {
+    grid-column: 4;
+    grid-row: 2 / 7;
   }
+
+  .cell-inspector {
+    grid-column: 4;
+    grid-row: 7 / 12;
+  }
+
+  .chart{
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background: url(../public/images/chart.png) no-repeat -5px bottom;
+  }
+
 </style>
