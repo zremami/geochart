@@ -1,5 +1,8 @@
 <template>
-  <textarea v-model="geojsonEdit" placeholder="Json Body"></textarea>
+  <textarea  v-model="geojsonEdit"
+  disabled
+  placeholder="WFS Body(GeoJson)"
+   ></textarea>
 </template>
 
 <script>
@@ -12,10 +15,11 @@
     computed: {
       geojsonEdit: {
         set(value) {
-          this.$emit('change', value)
+          this.jsonBack = JSON.parse(value);
+          this.$emit('change', JSON.parse(value))
         },
         get() {
-          return JSON.stringify(this.geojson, null, ' ')
+          return JSON.stringify(this.geojson, null, ' ');
         }
       }
     }
@@ -26,6 +30,6 @@
   textarea {
     width: 100%;
     height: 100%;
-    resize: none;
+    resize: both;
   }
 </style>
