@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="container">
     <div class="cell cell-map">
-      <map-container :geojson="geojson" v-on:select="selected = $event"></map-container>
+      <map-container :geojson="geojson" ></map-container>
     </div>
     <div class="cell cell-geojson-url">
-      <geojson-url @url="geojson = $event" ></geojson-url>
+      <geojson-url @urlChanged="geojson = $event" ></geojson-url>
     </div>
     <div class="cell cell-geojson-editor">
       <geojson-editor :geojson="geojson" @change="geojson = $event"></geojson-editor>
@@ -73,23 +73,23 @@
   }
 
   .cell-map {
-    grid-column: 1 / 4;
+    grid-column: 1 / 6;
     grid-row-start: 1;
     grid-row-end: 12;
   }
 
   .cell-geojson-url {
-    grid-column: 4;
+    grid-column: 6;
     grid-row: 1;
   }
 
   .cell-geojson-editor {
-    grid-column: 4;
+    grid-column: 6;
     grid-row: 2 / 7;
   }
 
   .cell-inspector {
-    grid-column: 4;
+    grid-column: 6;
     grid-row: 7 / 12;
   }
 

@@ -14,13 +14,15 @@
     },
     methods:{
       urlEdit: 
-        async function(value){
+        async function(url){
 
-          await fetch(value)
+          await fetch(url)
             .then(response => response.json())
-            .then(data => { this.jsondata = JSON.stringify(data); } );
+            .then(data => {
+              this.jsondata = JSON.stringify(data);
+              } );
           
-          this.$emit('url', this.jsondata);
+          this.$emit('urlChanged', this.jsondata);
 
         }
     },
