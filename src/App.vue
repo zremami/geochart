@@ -1,27 +1,16 @@
 <template>
   <div id="app" class="container">
     <div class="cell cell-map">
-<<<<<<< Updated upstream
-      <map-container :geojson="geojson" ></map-container>
-=======
       <map-container 
         :geojson="geojson"
         :baseLayerSelected="baseLayerPreview"
         @selectedFeature="selectedFeatureCallback" >
       </map-container>
->>>>>>> Stashed changes
     </div>
     <div class="cell cell-geojson-url">
-      <geojson-url @urlChanged="geojson = $event" ></geojson-url>
+      <geojson-url @urlChanged="urlChangedCallback" @baseChanged="baseurlCallback" ></geojson-url>
     </div>
     <div class="cell cell-geojson-editor">
-<<<<<<< Updated upstream
-      <geojson-editor :geojson="geojson" @change="geojson = $event"></geojson-editor>
-    </div>
-    <div class="cell cell-inspector">
-      <div class="chart">
-      </div>
-=======
       <geojson-editor 
         :geojson="geojson"
         @change="geojson = value">
@@ -31,7 +20,6 @@
       <geojson-chart 
         :selectedFeature="selectedFeature" >
       </geojson-chart>
->>>>>>> Stashed changes
     </div>
   </div>
 </template>
@@ -40,21 +28,33 @@
   import MapContainer from './components/MapContainer'
   import GeojsonUrl from './components/GeojsonUrl'
   import GeojsonEditor from './components/GeojsonEditor'
-
-  // Default Data
-  //import DEU from '../public/DEU.json'
+  import GeojsonChart from './components/GeojsonChart'
 
   export default {
     name: 'App',
     components: {
       MapContainer,
       GeojsonUrl,
-      GeojsonEditor
+      GeojsonEditor,
+      GeojsonChart
     },
     data: () => ({
-      selected: undefined,
-      geojson: null,
-    })
+      geojson: undefined,
+      baseLayerPreview: false,
+      selectedFeature: undefined
+    }),
+    methods:
+    {
+      baseurlCallback: function(value){
+        this.baseLayerPreview = value;
+      },
+      urlChangedCallback: function(value){
+        this.geojson = value;
+      },
+      selectedFeatureCallback: function(value){
+        this.selectedFeature = value;
+      }
+    }
   }
 </script>
 
@@ -84,7 +84,6 @@
     grid-auto-rows: 1fr;
     grid-gap: 1rem;
     padding: 1rem;
-    box-sizing: border-box;
   }
 
   .cell {
@@ -93,31 +92,25 @@
   }
 
   .cell-map {
-    grid-column: 1 / 6;
+    grid-column: 1 / 5;
     grid-row-start: 1;
     grid-row-end: 12;
   }
 
   .cell-geojson-url {
-    grid-column: 6;
+    grid-column: 5 / 7;
     grid-row: 1;
   }
 
   .cell-geojson-editor {
-    grid-column: 6;
+    grid-column:  5 / 7;
     grid-row: 2 / 7;
   }
 
-  .cell-inspector {
-    grid-column: 6;
+  .cell-chart {
+    grid-column:  5 / 7;
     grid-row: 7 / 12;
-  }
-
-  .chart{
-    width: 100%;
-    height: 100%;
-    resize: none;
-    background: url(../public/images/chart.png) no-repeat -5px bottom;
+    justify-self: right;
   }
 
 </style>
