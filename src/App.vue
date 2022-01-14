@@ -1,17 +1,37 @@
 <template>
   <div id="app" class="container">
     <div class="cell cell-map">
+<<<<<<< Updated upstream
       <map-container :geojson="geojson" ></map-container>
+=======
+      <map-container 
+        :geojson="geojson"
+        :baseLayerSelected="baseLayerPreview"
+        @selectedFeature="selectedFeatureCallback" >
+      </map-container>
+>>>>>>> Stashed changes
     </div>
     <div class="cell cell-geojson-url">
       <geojson-url @urlChanged="geojson = $event" ></geojson-url>
     </div>
     <div class="cell cell-geojson-editor">
+<<<<<<< Updated upstream
       <geojson-editor :geojson="geojson" @change="geojson = $event"></geojson-editor>
     </div>
     <div class="cell cell-inspector">
       <div class="chart">
       </div>
+=======
+      <geojson-editor 
+        :geojson="geojson"
+        @change="geojson = value">
+      </geojson-editor>
+    </div>
+    <div class="cell cell-chart">
+      <geojson-chart 
+        :selectedFeature="selectedFeature" >
+      </geojson-chart>
+>>>>>>> Stashed changes
     </div>
   </div>
 </template>
