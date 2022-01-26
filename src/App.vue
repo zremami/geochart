@@ -8,14 +8,18 @@
       </map-container>
     </div>
     <div class="cell cell-geojson-url">
-      <geojson-url @urlChanged="urlChangedCallback" @baseChanged="baseurlCallback" ></geojson-url>
+      <geojson-url 
+        @wfsResponse="wfsResponseCallback" 
+        @baseChanged="baseurlCallback" ></geojson-url>
     </div>
+<!--
     <div class="cell cell-geojson-editor">
       <geojson-editor 
         :geojson="geojson"
         @change="geojson = value">
       </geojson-editor>
     </div>
+-->
     <div class="cell cell-chart">
       <geojson-chart 
         :selectedFeature="selectedFeature" >
@@ -27,7 +31,7 @@
 <script>
   import MapContainer from './components/MapContainer'
   import GeojsonUrl from './components/GeojsonUrl'
-  import GeojsonEditor from './components/GeojsonEditor'
+  //import GeojsonEditor from './components/GeojsonEditor'
   import GeojsonChart from './components/GeojsonChart'
 
   export default {
@@ -35,7 +39,7 @@
     components: {
       MapContainer,
       GeojsonUrl,
-      GeojsonEditor,
+      //GeojsonEditor,
       GeojsonChart
     },
     data: () => ({
@@ -48,7 +52,7 @@
       baseurlCallback: function(value){
         this.baseLayerPreview = value;
       },
-      urlChangedCallback: function(value){
+      wfsResponseCallback: function(value){
         this.geojson = value;
       },
       selectedFeatureCallback: function(value){
@@ -92,24 +96,26 @@
   }
 
   .cell-map {
-    grid-column: 1 / 5;
+    grid-column: 1 / 4;
     grid-row-start: 1;
     grid-row-end: 12;
   }
 
   .cell-geojson-url {
-    grid-column: 5 / 7;
-    grid-row: 1;
+    grid-column: 4 / 6;
+    grid-row: 1 / 5;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 20px;
+    background-color: #f5f5f5;
   }
 
   .cell-geojson-editor {
-    grid-column:  5 / 7;
+    grid-column:  4 / 6;
     grid-row: 2 / 7;
   }
 
   .cell-chart {
-    grid-column:  5 / 7;
-    grid-row: 7 / 12;
+    grid-column:  4 / 6;
+    grid-row: 5 / 12;
     justify-self: right;
   }
 

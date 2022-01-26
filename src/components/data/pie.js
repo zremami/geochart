@@ -1,16 +1,16 @@
 export default {
-  textStyle: {
-    fontFamily: 'Inter, "Helvetica Neue", Arial, sans-serif',
-    fontSize: 10
-  },
+  
   title: {
     text: "" /*"Title"*/,
     left: "center",
     bottom: "bottom",
+    textStyle: {
+      fontFamily: 'Inter, "Helvetica Neue", Arial, sans-serif',
+      fontSize: 14
+    },
   },
   tooltip: {
     trigger: "item",
-    formatter: "{a} <br/>{b} : {c} ({d}%)"  /*"Tooltip"*/
   },
   legend: {
     orient: "vertical",
@@ -34,7 +34,7 @@ export default {
     {
       name: "" /*"Traffic Sources"*/,
       type: "pie",
-      center: ["60%", "50%"],
+      center: ["55%", "50%"],
       data: [] /*[
         { value: 335, name: "Direct" },
         { value: 310, name: "Email" },

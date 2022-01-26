@@ -1,12 +1,12 @@
 export default {
-  textStyle: {
-    fontFamily: 'Inter, "Helvetica Neue", Arial, sans-serif',
-    fontSize: 10
-  },
   title: {
     text: "" /*"Title"*/,
     left: "center",
     bottom: "bottom",
+    textStyle: {
+      fontFamily: 'Inter, "Helvetica Neue", Arial, sans-serif',
+      fontSize: 14
+    },
   },
   tooltip: {
     trigger: 'axis',
@@ -47,7 +47,8 @@ export default {
   ],
   yAxis: [
     {
-      type: 'value'
+      type: 'value',
+      name: '' /*'Y Axis'*/,
     }
   ],
   series: [] /*[

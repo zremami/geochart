@@ -1,20 +1,19 @@
 export default {
-  textStyle: {
-    fontFamily: 'Inter, "Helvetica Neue", Arial, sans-serif',
-    fontSize: 10
-  },
   title: {
     text: "" /*"Title"*/,
     left: "center",
     bottom: "bottom",
+    textStyle: {
+      fontFamily: 'Inter, "Helvetica Neue", Arial, sans-serif',
+      fontSize: 14
+    },
   },
   tooltip: {
-    trigger: 'item',
+    trigger: 'axis',
     axisPointer: {
       // Use axis to trigger tooltip
       type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
-    },
-    renderMode: 'auto'
+    }
   },
   legend: {
     orient: "vertical",
@@ -23,7 +22,7 @@ export default {
   },
   grid: {
     left: '15%',
-    right: '8%',
+    right: '15%',
     bottom: '12%',
     containLabel: true
   },
@@ -41,7 +40,8 @@ export default {
     }
   },
   xAxis: {
-    type: 'value'
+    type: 'value',
+    name: '' /*'X Axis'*/,
   },
   yAxis: {
     type: 'category',

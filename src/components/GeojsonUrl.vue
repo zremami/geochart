@@ -1,11 +1,11 @@
 <template>
-
   <div class="url-container">
+  <div :class="loaderClass"></div>
     
-    <table >
-      <tr>
+    <table style="width:100%;">
+      <tr style="display:none">
         <td style="width:80%">
-            <textarea class="url__input" v-model="url" @input="urlEdit($event.target.value)" type="text" placeholder="WFS URL" />
+            <textarea class="url__input" v-model="url" @input="urlEdit($event.target.value)" type="text" placeholder="WFS URL" disabled />
         </td>
         <td style="width:20%">
             <input
@@ -18,6 +18,14 @@
             <label for="baselayer_checkbox"> Base Layer</label>
         </td>
       </tr>
+      <tr>
+        <td colspan="2" style="width:80%">
+          <url-builder 
+            :urlObject="urlObject"
+             @newUrlChanged="newUrlChangedCallback" >
+          </url-builder>
+        </td>
+      </tr>
     </table>
 
   </div>
@@ -25,35 +33,57 @@
 </template>
 
 <script>
+  import UrlBuilder from './GeojsonUrlBuilder'
 
   export default {
     name: 'GeojsonUrl',
-    emits: ['urlChanged', 'baseChanged'],
+    emits: ['wfsResponse', 'baseChanged'],
+    components: {
+      UrlBuilder,
+    },
     data () {
       return {
         url: '',
         jsondata: '',
-        baselayer: false
+        baselayer: false,
+        urlObject: {
+          startDate: new Date(new Date().getFullYear(), new Date().getMonth() - 2, new Date().getDate()).toJSON().replace('Z',''),
+          endDate: new Date().toJSON().replace('Z',''),
+          type: 'nuklide_fisch',
+          nuclids: ["K-40"],
+        },
+        loaderClass: '',
       }
     },
     mounted()
     {
+      const staticUrl = "https://www.imis.bfs.de/ogc/opendata/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=opendata:" + this.urlObject.type +
+        "&CQL_FILTER=(sample_begin%20DURING%20" + encodeURIComponent(this.urlObject.startDate) +
+        "%2F" + encodeURIComponent(this.urlObject.endDate) + ")%20AND%20(nuclide%3D%27" + this.urlObject.nuclids[0] + "%27)&VIEWPARAMS=order:sample_begin;&outputFormat=application%2Fjson";
+
       setTimeout(() => {
-        this.urlEdit("https://www.imis.bfs.de/ogc/opendata/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=opendata:nuklide_fleisch&CQL_FILTER=(sample_begin%20DURING%202020-12-08T12%3A00%3A00.000Z%2F2021-01-08T12%3A00%3A00.000Z)%20AND%20(nuclide%3D%27Ce-144%27%20OR%20nuclide%3D%27Cs-137%27%20OR%20nuclide%3D%27Cs-134%27%20OR%20nuclide%3D%27Ru-103%27%20OR%20nuclide%3D%27I-131%27%20OR%20nuclide%3D%27K-40%27%20OR%20nuclide%3D%27Co-60%27)&VIEWPARAMS=order:sample_begin;&outputFormat=application%2Fjson");
-        //this.urlEdit();
+        this.urlEdit(staticUrl);
       }, 1000);
     },
     methods:{
-      urlEdit: async function(value){
-          await fetch(value)
-            .then(response => response.json())
-            .then(data => { this.jsondata = JSON.stringify(data); } )
+      urlEdit: async function(url){
 
-          this.$emit('urlChanged', JSON.parse(this.jsondata));
+        this.loaderClass = 'loader';
+        await fetch(url)
+          .then(response => response.json())
+          .then(data => { this.jsondata = JSON.stringify(data); } )
+
+        this.loaderClass = '';
+
+        this.$emit('wfsResponse', JSON.parse(this.jsondata));
       },
       baselayerChanged: function ($event) {
           this.$emit('baseChanged', $event.target.checked);
-      }
+      },
+      newUrlChangedCallback: function(value){
+        this.url = value;
+        this.urlEdit(this.url);
+      },
     }
   }
 </script>
@@ -62,6 +92,8 @@
 .url-container{
   display: block;
   position: absolute;
+  width: 575px;
+  padding: 10px;
 }
 
 .url__input {
@@ -77,6 +109,31 @@
 .url-container label {
   margin-top: 5px;
   font-size: 13px;
+}
+
+/* loader */
+.loader {
+  border: 16px solid #888888;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 25%;
+  left: 40%;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 </style>

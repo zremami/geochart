@@ -1,48 +1,49 @@
 <template>
+  <div id="figures-container">
+    <div class="figure" v-show="selectedChart === 'pie'">
+      <select id="chart-view" v-model="selectedChart">
+        <option value="bar" >bar</option>
+        <option value="pie">pie</option>
+        <option value="stacked">stacked</option>
+      </select>
 
-  <div class="figure" v-show="selectedChart === 'pie'">
-    <select id="chart-view" v-model="selectedChart">
-      <option value="bar" >bar</option>
-      <option value="pie">pie</option>
-      <option value="stacked">stacked</option>
-    </select>
+      <e-chart
+        :option="pie"
+        :init-options="initOptions"
+        ref="pie"
+        autoresize
+      />
+    </div>
 
-    <e-chart
-      :option="pie"
-      :init-options="initOptions"
-      ref="pie"
-      autoresize
-    />
-  </div>
+    <div class="figure" v-show="selectedChart === 'bar'">
+      <select id="chart-view" v-model="selectedChart">
+        <option value="bar" >bar</option>
+        <option value="pie">pie</option>
+        <option value="stacked">stacked</option>
+      </select>
 
-  <div class="figure" v-show="selectedChart === 'bar'">
-    <select id="chart-view" v-model="selectedChart">
-      <option value="bar" >bar</option>
-      <option value="pie">pie</option>
-      <option value="stacked">stacked</option>
-    </select>
+      <e-chart
+        :option="bar"
+        :init-options="initOptions"
+        ref="bar"
+        autoresize
+      />
+    </div>
 
-    <e-chart
-      :option="bar"
-      :init-options="initOptions"
-      ref="bar"
-      autoresize
-    />
-  </div>
+    <div class="figure" v-show="selectedChart === 'stacked'">
+      <select id="chart-view" v-model="selectedChart">
+        <option value="bar" >bar</option>
+        <option value="pie">pie</option>
+        <option value="stacked">stacked</option>
+      </select>
 
-  <div class="figure" v-show="selectedChart === 'stacked'">
-    <select id="chart-view" v-model="selectedChart">
-      <option value="bar" >bar</option>
-      <option value="pie">pie</option>
-      <option value="stacked">stacked</option>
-    </select>
-
-    <e-chart
-      :option="stacked"
-      :init-options="initOptions"
-      ref="stacked"
-      autoresize
-    />
+      <e-chart
+        :option="stacked"
+        :init-options="initOptions"
+        ref="stacked"
+        autoresize
+      />
+    </div>
   </div>
 
 </template>
@@ -76,7 +77,6 @@ use([
   LegendComponent,
   GridComponent 
 ]);
-
 
 export default {
   name: 'GeojsonChart',
@@ -116,9 +116,9 @@ export default {
     startActions() {
       
       //let dataIndex = -1;
-      const pie = this.$refs.pie;
-      const bar = this.$refs.bar;
-      const stacked = this.$refs.stacked;
+      let pie = this.$refs.pie;
+      let bar = this.$refs.bar;
+      let stacked = this.$refs.stacked;
 
       if (!pie && !bar && !stacked)
         return;
@@ -129,51 +129,51 @@ export default {
       if(features && features !== undefined)
       {
         ////////////////////////////////////////////////////pie//////////////////////////////////////////////////////
-        // Erase old data from pie
+        // Erase old data for pie
         pie.option.legend.data = [];
         pie.option.series[0].data = [];
+        pie.setOption(this.pie, true);
 
-        // Make new data from pie
-        pie.option.title.text = features[0].properties.local_authority + " : " + features[0].properties.media;
-        pie.option.series[0].name = 
-          features[0].properties.sample_begin + " : " + 
-          features[0].properties.id + " : " + 
-          features[0].properties.sample_type + " : " + 
-          features[0].properties.unit ;
-        
-        
+        let lastFeature = features[features.length - 1];
+        let lastDate = new Date(lastFeature.properties.sample_begin);
+
+        // Make new data for pie
+        pie.option.title.text = 
+        features[0].properties.local_authority + " : " + 
+        features[0].properties.media + " - " + 
+        lastDate.toLocaleString();
+        pie.option.series[0].name = features[0].properties.unit;
+
         /* Get uniq nuclids */
         var uniqueNuclide = features.map(e => e.properties.nuclide).filter(this.onlyUnique);
 
         uniqueNuclide.forEach(e => {
           pie.option.legend.data.push(e);
 
-          let values = features.filter(f => f.properties.nuclide === e.toString()).map(d => d.properties.value);
-          let meanNuclidValue = this.getMean(values);
+          let allFeaturesOfNuclide = features.filter(f => f.properties.nuclide === e.toString());
+          let lastFeatureOfNuclide = allFeaturesOfNuclide[allFeaturesOfNuclide.length - 1];
 
-          pie.option.series[0].data.push({ value: meanNuclidValue, name: e });
+          let value = lastFeatureOfNuclide.properties.value;
+
+          pie.option.series[0].data.push({ value: value, name: e });
         });
 
 
         ////////////////////////////////////////////////////bar//////////////////////////////////////////////////////
         // Erase old data from bar
         bar.option.legend.data = [];
-        bar.option.xAxis = [{
-          type: 'category',
-          axisTick: { show: false },
-          data: []
-        }];
+        bar.option.xAxis.forEach(e => e.data = []);
         bar.option.series = [];
-        bar.option.xAxis.forEach(e => e.data = [])
-        bar.option.series.forEach(e => e.data = [])
+        bar.setOption(this.bar, true);
 
         // Make new data from bar
         bar.option.title.text = features[0].properties.local_authority + " : " + features[0].properties.media;
+        bar.option.yAxis[0].name = features[0].properties.unit;
 
         /* Get uniq dates */
         var uniqueDates = features.map(e => e.properties.sample_begin).filter(this.onlyUnique);
 
-        // Add Nuklids as series
+        // Add Nuclids as series
         uniqueNuclide.forEach(e => {
           let newSerie = {
             name: e,
@@ -196,7 +196,7 @@ export default {
           bar.option.series.push(newSerie);
         });
 
-        // Add nuklids value in related series
+        // Add nuclids value in related series
         uniqueDates.forEach(date => {
           
           let d = new Date(date);
@@ -213,7 +213,7 @@ export default {
 
           // Add values in xAxis
           featuresInDate.forEach(f => {
-            bar.option.series.filter(e => e.name === f.properties.nuclide.toString())[0].data
+            bar.option.series.find(e => e.name === f.properties.nuclide.toString()).data
             .push(f.properties.value ? f.properties.value : 0);
           });
 
@@ -223,22 +223,20 @@ export default {
         ////////////////////////////////////////////////////stacked//////////////////////////////////////////////////////
         // Erase old data from stacked
         stacked.option.legend.data = [];
-        stacked.option.yAxis = {
-          type: 'category',
-          data: []
-        };
+        stacked.option.yAxis.data = [];
         stacked.option.series = [];
-        stacked.option.series.forEach(e => e.data = [])
+        stacked.setOption({}, true);
 
         // Make new data from stacked
         stacked.option.title.text = features[0].properties.local_authority + " : " + features[0].properties.media;
+        stacked.option.xAxis.name = features[0].properties.unit;
 
         // Add Dates as yAxis
         uniqueDates.forEach(f => {
           stacked.option.yAxis.data.push(f);
         });
 
-        // Add Nuklids as series
+        // Add Nuclids as series
         uniqueNuclide.forEach(e => {
           let newSerie = {
             name: e,
@@ -257,7 +255,7 @@ export default {
           stacked.option.series.push(newSerie);
         });
 
-        // Add nuklids value in related series
+        // Add nuclids value in related series
         stacked.option.yAxis.data.forEach((date, i) => {
 
           stacked.option.yAxis.data[i] = new Date(date).toLocaleDateString();
@@ -265,8 +263,9 @@ export default {
           let featuresInDate = features.filter(f => f.properties.sample_begin === date);
 
           featuresInDate.forEach(f => {
-            stacked.option.series.filter(e => e.name === f.properties.nuclide.toString())[0].data
+            stacked.option.series.find(e => e.name === f.properties.nuclide.toString()).data
             .push(f.properties.value ? f.properties.value : 0);
+
           });
 
         });
@@ -291,16 +290,17 @@ export default {
 
 <style scoped>
   .figure {
-    display: block;
     margin: 0;
     border: 1px solid rgba(0,0,0,.1);
     border-radius: 8px;
-    box-shadow: 0 0 45px rgb(0 0 0 / 20%);
+    box-shadow: 0 0 20px rgb(0 0 0 / 25%);
     padding: 0;
     min-width: calc(10vw + 1em);
-    width: 585px;
-    height: 300px;
+
+    display: block;
     position: absolute;
+    width: 582px;
+    height: 440px;
     bottom: 30px;
     right: 30px;
   }

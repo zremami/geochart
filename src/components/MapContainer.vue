@@ -87,7 +87,7 @@
           if(baseLayerPreview !== null && baseLayerPreview)
             features = features.concat(new GeoJSON({featureProjection: 'EPSG:3857'}).readFeatures(this.geojsonBaseLayer));
 
-          if(geojson !== null && geojson && geojson.isTrusted === undefined)
+          if(geojson !== null && geojson)
             features = features.concat(new GeoJSON({featureProjection: 'EPSG:3857'}).readFeatures(geojson));
 
           source.clear();
@@ -150,14 +150,14 @@
               var sampleTypesArray = [];
               var valuesArray = [];
               var totalFeatures = 0;
-              self.geojson.features.forEach(element => {
-                if(element.properties.local_authority === feature.get('local_authority'))
+              self.geojson.features.forEach(f => {
+                if(f.properties.local_authority === feature.get('local_authority'))
                 {
-                  nuclidesArray.push(element.properties.nuclide);
-                  datesArray.push(element.properties.sample_begin);
-                  sampleTypesArray.push(element.properties.sample_type);
-                  valuesArray.push(element.properties.value);
-                  featuresArray.push(element);
+                  nuclidesArray.push(f.properties.nuclide);
+                  datesArray.push(new Date(f.properties.sample_begin));
+                  sampleTypesArray.push(f.properties.sample_type);
+                  valuesArray.push(f.properties.value);
+                  featuresArray.push(f);
                   totalFeatures++;
                 }
               });
@@ -175,7 +175,7 @@
               let nuclides = uniqueNuclides.join(',');
               let featuresDetails = datesArray.map((date, i) => 
                 '<tr><td>' + 
-                date + '</td><td>' + 
+                date.toLocaleString() + '</td><td>' + 
                 sampleTypesArray[i] + '</td><td>' + 
                 valuesArray[i] +
                 '</td></tr>')
@@ -192,7 +192,7 @@
                   '<li>-----------------</li>' +
                   '<li><b>nuclides:</b> ' + nuclides + '</li>' +
                   '<li><b>features Details:</b> '
-                    + '<table><tr><th>date</th><th>sample type</th><th>value</th></tr>'
+                    + '<table style="width:100%"><tr><th>date</th><th>type</th><th>value</th></tr>'
                     +  featuresDetails + '</table>' + '</li>' +
                   '<li><b>Total Features:</b> ' + total + '</li>' +
                 '</ul>';
