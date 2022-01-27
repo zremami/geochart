@@ -21,7 +21,7 @@ export default {
         data: []
     },
     grid: {
-        left: '15%',
+        left: '20%',
         right: '15%',
         bottom: '12%',
         containLabel: true

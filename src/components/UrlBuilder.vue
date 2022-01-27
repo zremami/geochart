@@ -100,7 +100,7 @@
 <script>
 
   export default {
-    name: 'GeojsonUrlBuilder',
+    name: 'UrlBuilder',
     emits: ['newUrlChanged'],
     props: {
       urlObject: Object
@@ -187,6 +187,9 @@
 </script>
 
 <style scoped>
+  table{
+    line-height: 188%;
+  }
 
   table, select, input, button{
     width: 100%;

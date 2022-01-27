@@ -76,7 +76,7 @@
       }
     },
     methods: {
-      updateSource: async function(geojson, baseLayerPreview) {
+      updateSource: function(geojson, baseLayerPreview) {
 
         try
         {
@@ -102,7 +102,6 @@
         {
           console.log(error);
         }
-
         
       },
       setFeatures: function() {
@@ -238,7 +237,7 @@
         }
 
       },
-      // Get uniq nuclids
+      // Get uniq items
       onlyUnique: function (value, index, self) {
         return self.indexOf(value) === index;
       },

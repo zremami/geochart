@@ -33,10 +33,10 @@
 </template>
 
 <script>
-  import UrlBuilder from './GeojsonUrlBuilder'
+  import UrlBuilder from './UrlBuilder'
 
   export default {
-    name: 'GeojsonUrl',
+    name: 'Url',
     emits: ['wfsResponse', 'baseChanged'],
     components: {
       UrlBuilder,
@@ -90,10 +90,8 @@
 
 <style scoped>
 .url-container{
-  display: block;
-  position: absolute;
-  width: 575px;
-  
+
+  width: 581px;
 }
 
 .url__input {
@@ -121,8 +119,8 @@
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
   position: absolute;
-  top: 25%;
-  left: 40%;
+  top: 15%;
+  left: 75%;
 }
 
 /* Safari */

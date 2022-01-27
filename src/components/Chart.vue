@@ -1,11 +1,6 @@
 <template>
   <div id="figures-container">
     <div class="figure" v-show="selectedChart === 'pie'">
-      <select id="chart-view" v-model="selectedChart">
-        <option value="bar" >bar</option>
-        <option value="pie">pie</option>
-        <option value="stacked">stacked</option>
-      </select>
 
       <e-chart
         :option="pie"
@@ -16,11 +11,6 @@
     </div>
 
     <div class="figure" v-show="selectedChart === 'bar'">
-      <select id="chart-view" v-model="selectedChart">
-        <option value="bar" >bar</option>
-        <option value="pie">pie</option>
-        <option value="stacked">stacked</option>
-      </select>
 
       <e-chart
         :option="bar"
@@ -31,11 +21,6 @@
     </div>
 
     <div class="figure" v-show="selectedChart === 'stacked'">
-      <select id="chart-view" v-model="selectedChart">
-        <option value="bar" >bar</option>
-        <option value="pie">pie</option>
-        <option value="stacked">stacked</option>
-      </select>
 
       <e-chart
         :option="stacked"
@@ -44,6 +29,13 @@
         autoresize
       />
     </div>
+
+    <select class="chart-view" v-model="selectedChart">
+      <option value="bar" >bar</option>
+      <option value="pie">pie</option>
+      <option value="stacked">stacked</option>
+    </select>
+    
   </div>
 
 </template>
@@ -79,7 +71,7 @@ use([
 ]);
 
 export default {
-  name: 'GeojsonChart',
+  name: 'Chart',
   components: {
     EChart
   },
@@ -289,6 +281,11 @@ export default {
 </script>
 
 <style scoped>
+
+  #figures-container{
+    margin-bottom: -15px;
+  }
+
   .figure {
     margin: 0;
     border: 1px solid rgba(0,0,0,.1);
@@ -296,19 +293,19 @@ export default {
     box-shadow: 0 0 20px rgb(0 0 0 / 25%);
     padding: 0;
     min-width: calc(10vw + 1em);
+    min-height: calc(10vh + 1em);
 
     display: block;
-    position: absolute;
-    width: 600px;
-    height: 400px;
+    width: 582px;
+    height: 440px;
     bottom: 30px;
     right: 30px;
   }
 
-  #chart-view{
-    position: absolute;
-    top: 30px;
-    right: 10px;
+  .chart-view{
+    position: relative;
+    bottom: 50px;
+    left: 10px;
     z-index: 1000;
   }
 </style>

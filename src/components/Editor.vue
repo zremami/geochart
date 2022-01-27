@@ -1,14 +1,14 @@
 <template>
   <textarea  v-model="geojsonEdit"
-  disabled
-  placeholder="WFS Body(GeoJson)"
-   ></textarea>
+    disabled
+    placeholder="WFS Body(GeoJson)" >
+  </textarea>
 </template>
 
 <script>
 
   export default {
-    name: 'GeojsonEditor',
+    name: 'Editor',
     props: {
       geojson: Object
     },

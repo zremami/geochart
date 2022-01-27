@@ -20,7 +20,7 @@ export default {
         data: []
     },
     grid: {
-        left: '18%',
+        left: '22%',
         right: '8%',
         bottom: '18%',
         containLabel: false
