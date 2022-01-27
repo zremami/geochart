@@ -12,14 +12,7 @@
         @wfsResponse="wfsResponseCallback" 
         @baseChanged="baseurlCallback" ></geojson-url>
     </div>
-<!--
-    <div class="cell cell-geojson-editor">
-      <geojson-editor 
-        :geojson="geojson"
-        @change="geojson = value">
-      </geojson-editor>
-    </div>
--->
+
     <div class="cell cell-chart">
       <geojson-chart 
         :selectedFeature="selectedFeature" >
@@ -31,7 +24,6 @@
 <script>
   import MapContainer from './components/MapContainer'
   import GeojsonUrl from './components/GeojsonUrl'
-  //import GeojsonEditor from './components/GeojsonEditor'
   import GeojsonChart from './components/GeojsonChart'
 
   export default {

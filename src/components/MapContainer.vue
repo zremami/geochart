@@ -210,7 +210,9 @@
             }
             
           });
-          
+
+
+          //select and sending data
           this.olMap.on('click', function (e) {
 
             this.forEachFeatureAtPixel(e.pixel, function (feature) {
