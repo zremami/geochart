@@ -299,15 +299,15 @@ export default {
 
     display: block;
     position: absolute;
-    width: 582px;
-    height: 440px;
+    width: 600px;
+    height: 400px;
     bottom: 30px;
     right: 30px;
   }
 
   #chart-view{
     position: absolute;
-    top: 10px;
+    top: 30px;
     right: 10px;
     z-index: 1000;
   }
