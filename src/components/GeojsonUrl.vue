@@ -93,7 +93,7 @@
   display: block;
   position: absolute;
   width: 575px;
-  padding: 10px;
+  
 }
 
 .url__input {
