@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/HsKA-OSGIS/geochart">
-        <img src="https://github.com/HsKA-OSGIS/geochart/src/assets/logo-full-width.png?raw=true" height="150" />
+        <img src="https://raw.githubusercontent.com/zremami/geochart/master/src/assets/logo-full-width.png" height="150" />
     </a>
 </p>
 
