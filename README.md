@@ -1,12 +1,12 @@
 <p align="center">
     <a href="https://github.com/HsKA-OSGIS/geochart">
-        <img src="https://raw.githubusercontent.com/zremami/geochart/master/src/assets/logo-full-width.png" height="150" />
+        <img src="https://raw.githubusercontent.com/HsKA-OSGIS/geochart/master/src/assets/logo-full-width.png" height="150" />
     </a>
 </p>
 
-# About GEOchart
+# About the Application
 
-This WebGIS application is based on Apache Echarts and OpenLayers which visualizes radiologic data provided by the Federal Office of Radiation Protection - BFS.
+This WebGIS application is based on Apache Echarts and OpenLayers which visualizes radiologic data provided by <a href="https://www.bfs.de/">the Federal Office of Radiation Protection - BFS</a>
 
 
 ## Installation
