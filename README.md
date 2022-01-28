@@ -6,7 +6,7 @@
 
 # About the Application
 
-This WebGIS application is based on Apache Echarts and OpenLayers which visualizes radiologic data provided by <a href="https://www.bfs.de/">the Federal Office of Radiation Protection - BFS</a>
+This WebGIS application is based on Apache Echarts and OpenLayers which visualizes radiological data provided by <a href="https://www.bfs.de/">the Federal Office of Radiation Protection - BFS</a>
 
 
 ## Installation
